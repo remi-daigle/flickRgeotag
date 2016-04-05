@@ -4,6 +4,7 @@ Title: flickRgeotag
 Version: 0.1.0
 Author: Remi Daigle
 Maintainer: Remi Daigle <remi.daigle@utoronto.ca>
-Description: R wrapper for the flickerapi Python module. Queries flickr for geotagged data
+Description: Queries flickr for geotagged data. Works as an R wrapper for the flickerapi Python module. Requires a Python installation.
 License: CC0
 LazyData: TRUE
+RoxygenNote: 5.0.1
