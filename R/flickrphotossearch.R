@@ -37,7 +37,7 @@ flickr.photos.search <- function(api_key,secret,bbox){
     # query number of pages
     query_photos <- pyfps(bbox=bbox,
                                       has_geo=1,
-                                      extras='geo',
+                                      extras='geo,tags',
                                       last_update=tstamp,
                                       format='parsed-json',
                                       per_page=100,
@@ -52,7 +52,7 @@ flickr.photos.search <- function(api_key,secret,bbox){
         test_photos <- try(do.call(rbind.data.frame,
                                    c(pyfps(bbox=as.character(bbox),
                                            has_geo=1,
-                                           extras='geo',
+                                           extras='geo,tags',
                                            last_update=tstamp,
                                            format='parsed-json',
                                            per_page=100,
