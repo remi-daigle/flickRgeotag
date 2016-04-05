@@ -36,18 +36,19 @@ flickr.photos.search <- function(api_key,secret,bbox){
 
     # query number of pages
     query_photos <- pyfps(bbox=bbox,
-                                      has_geo=1,
-                                      extras='geo,tags',
-                                      last_update=tstamp,
-                                      format='parsed-json',
-                                      per_page=100,
-                                      page='1')
+                          has_geo=1,
+                          extras='geo,tags',
+                          last_update=tstamp,
+                          format='parsed-json',
+                          per_page=100,
+                          page='1')
     tp <- query_photos$photos$pages
 
     # loop over all the pages, tried to use dplyr for this but can't figure out how to handle errors in 'do'
     photos <- NULL
     for(p in 1:tp){
-        print(p)
+        print(paste0('Downloading page ',p,' of ',tp))
+
         # try to download the page, convert json to dataframe and add page number
         test_photos <- try(do.call(rbind.data.frame,
                                    c(pyfps(bbox=as.character(bbox),
@@ -69,9 +70,12 @@ flickr.photos.search <- function(api_key,secret,bbox){
         }
     }
 
-
-
+    #exit Python
     PythonInR::pyExit()
+
+    # add url
+    photos <- photos %>% mutate(url=paste0('https://farm',farm,'.staticflickr.com/',server,'/',id,'_',secret,'.jpg'))
+
     return(photos)
 }
 
