@@ -3,3 +3,4 @@
 export(flickr.photos.search)
 import(PythonInR)
 import(dplyr)
+import(sp)

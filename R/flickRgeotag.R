@@ -6,4 +6,5 @@
 #' @name flickRgeotag
 #' @import PythonInR
 #' @import dplyr
+#' @import sp
 NULL

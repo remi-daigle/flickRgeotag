@@ -11,7 +11,7 @@ flickr.photos.search(api_key, secret, bbox)
 
 \item{secret}{your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
 
-\item{bbox}{the spatial bounding box from spatial data; output from sp::bbox()}
+\item{bbox}{the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')}
 }
 \value{
 data.frame

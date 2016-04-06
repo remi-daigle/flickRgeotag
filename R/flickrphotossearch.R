@@ -2,7 +2,7 @@
 #'
 #' Returns data.frame of metadata for geotagged images inside the bounding box. Essentially a pared down R/Python version of the flickr \href{https://www.flickr.com/services/api/explore/flickr.photos.search}{tool}
 #'
-#' @param bbox the spatial bounding box from spatial data; output from sp::bbox()
+#' @param bbox the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')
 #' @param api_key your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
 #' @param secret your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
 #'
@@ -15,9 +15,11 @@
 #' bb <- '-65,44.5,-64.5,45'
 #' photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
 
-flickr.photos.search <- function(api_key,secret,bbox){
-    # make bbox a character string
-    bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
+flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags'){
+    # make bbox a character string if necessary
+    if(class(bbox)=="matrix"){
+        bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
+    }
 
     # turn on python
     if(PythonInR::pyIsConnected()==FALSE){
