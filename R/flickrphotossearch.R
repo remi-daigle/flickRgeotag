@@ -5,6 +5,7 @@
 #' @param bbox the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')
 #' @param api_key your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
 #' @param secret your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
+#' @param extras character string of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
 #'
 #' @return data.frame
 #' @export
@@ -41,7 +42,7 @@ flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags'){
     # query number of pages
     query_photos <- pyfps(bbox=bbox,
                           has_geo=1,
-                          extras='geo,tags',
+                          extras=extras,
                           last_update=tstamp,
                           format='parsed-json',
                           per_page=100,
@@ -57,7 +58,7 @@ flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags'){
         test_photos <- try(do.call(rbind.data.frame,
                                    c(pyfps(bbox=as.character(bbox),
                                            has_geo=1,
-                                           extras='geo,tags',
+                                           extras=extras,
                                            last_update=tstamp,
                                            format='parsed-json',
                                            per_page=100,

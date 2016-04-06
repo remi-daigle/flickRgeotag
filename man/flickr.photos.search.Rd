@@ -4,7 +4,7 @@
 \alias{flickr.photos.search}
 \title{flickr.photos.search}
 \usage{
-flickr.photos.search(api_key, secret, bbox)
+flickr.photos.search(api_key, secret, bbox, extras = "geo,tags")
 }
 \arguments{
 \item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
@@ -12,6 +12,8 @@ flickr.photos.search(api_key, secret, bbox)
 \item{secret}{your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
 
 \item{bbox}{the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')}
+
+\item{extras}{character string of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
 }
 \value{
 data.frame
