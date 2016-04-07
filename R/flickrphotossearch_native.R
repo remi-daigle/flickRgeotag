@@ -51,7 +51,7 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
 
         # store geocoded information in users global environment
         if(!exists(".flickr_api_result", envir=.GlobalEnv)) {
-            db <<- list()
+            db <- list()
         } else {
             db <- get(".flickr_api_result", envir=.GlobalEnv)
         }
