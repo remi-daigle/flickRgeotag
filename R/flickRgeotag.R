@@ -1,10 +1,12 @@
-#' flickRgeotag
+#' package
 #'
-#' Queries flickr for geotagged data. Works as an R wrapper for the flickerapi Python module. Requires a Python installation.
+#' Queries flickr for geotagged data. Works as a customized R wrapper for the flickr \href{https://www.flickr.com/services/api/}{API}.
 #'
 #' @docType package
 #' @name flickRgeotag
-#' @import PythonInR
-#' @import dplyr
+#' @import magrittr
 #' @import sp
+#' @import jsonlite
+#' @import RCurl
+#' @import dplyr
 NULL
