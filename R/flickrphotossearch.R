@@ -13,12 +13,18 @@
 #' @export
 #'
 #' @examples
+#' # set up basic information
 #' api <- '1aaaaa11a1aa11aaa1a11a111a1aaaaa'   # insert your own API key here
 #' sec <- '11a1a111a111a1a1'                   # insert your own secret code here
 #' bb <- '-65,44.5,-64.5,45'
-#' photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
+#'
+#' # get metadata from page 1 (100 records per page)
+#' photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,page=1)
+#'
+#' # get the total number of pages
+#' num <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,pagenum=TRUE)
 
-flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags',page=1,pagenum=FALSE){
+flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken',page=1,pagenum=FALSE){
     # make bbox a character string if necessary
     if(class(bbox)=="matrix"){
         bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
@@ -27,9 +33,6 @@ flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags',page=1,pa
     # edit bbox and extra to work in url
     bbox <- gsub(',','%2C',bbox)
     extras <- gsub(',','%2C',extras)
-
-    # define 30 year timestamp
-    tstamp <- as.integer(as.numeric(Sys.time())-(60*60*24*365*30))
 
     # query number of pages and metadata
     raw <- NULL
