@@ -4,7 +4,7 @@
 \alias{flickr.meta.dl}
 \title{Download all metadata related to flickr.photos.search}
 \usage{
-flickr.meta.dl(api_key, secret, bbox, extras)
+flickr.meta.dl(api_key, secret, bbox, extras = "geo,tags,date_taken")
 }
 \arguments{
 \item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}

@@ -13,7 +13,7 @@
 #' sec <- '11a1a111a111a1a1'                   # insert your own secret code here
 #' bb <- '-65,44.5,-64.5,45'
 #' photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
-flickr.meta.dl <- function(api_key,secret,bbox,extras){
+flickr.meta.dl <- function(api_key,secret,bbox,extras='geo,tags,date_taken'){
 
     pages <- flickr.photos.search(api_key = api_key,secret = secret,bbox=bbox,extras = extras,pagenum=TRUE)
 
