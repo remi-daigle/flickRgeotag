@@ -9,6 +9,10 @@
 #' @export
 #'
 #' @examples
+#' api <- '1aaaaa11a1aa11aaa1a11a111a1aaaaa'   # insert your own API key here
+#' sec <- '11a1a111a111a1a1'                   # insert your own secret code here
+#' bb <- '-65,44.5,-64.5,45'
+#' photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
 flickr.meta.dl <- function(api_key,secret,bbox,extras){
 
     pages <- flickr.photos.search(api_key = api_key,secret = secret,bbox=bbox,extras = extras,pagenum=TRUE)
@@ -18,6 +22,7 @@ flickr.meta.dl <- function(api_key,secret,bbox,extras){
 
     photos <- df %>%
         group_by(p) %>%
-        do(flickr.photos.search(api_key = api_key,secret = secret,bbox=bbox,extras = extras,page=.$p))
+        do(flickr.photos.search(api_key = api_key,secret = secret,bbox=bbox,extras = extras,page=.$p)) %>%
+        ungroup()
 }
 
