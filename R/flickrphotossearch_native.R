@@ -25,6 +25,7 @@
 #' head(df)
 #'
 flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest/", .usecache=TRUE) {
+    # browser()
     # make URL
     searchparams <- list(...)
     # may override some search params: https://www.flickr.com/services/api/response.json.html
@@ -47,7 +48,7 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
     # if there is no cached result, query the URL and parse using rjson
     if(is.null(lines) || !.usecache) {
         .flickr_api_result <- NULL; rm(.flickr_api_result) # trick CMD check
-        message("Retreiving information from ", url_string)
+        # message("Retreiving information from ", url_string)
         connect <- url(url_string)
         lines <- try(paste(readLines(connect, warn = FALSE), collapse=""), silent = TRUE)
         close(connect)
@@ -65,6 +66,6 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
     if(class(lines) == "try-error") {
         return(list(stat="url_request_error", code=-1))
     } else {
-        return(rjson::fromJSON(lines))
+        return(jsonlite::fromJSON(lines))
     }
 }

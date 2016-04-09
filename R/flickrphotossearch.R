@@ -30,30 +30,23 @@ flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken
         bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
     }
 
-    # edit bbox and extra to work in url
-    bbox <- gsub(',','%2C',bbox)
-    extras <- gsub(',','%2C',extras)
-
     # query number of pages and metadata
     raw <- NULL
     count=0
     while(class(raw$photos$photo)!="data.frame"&count<=10){
         count=count+1
 
-        raw <- fromJSON(getURL(paste0('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=',
-                                      api_key,
-                                      '&bbox='
-                                      ,bbox,
-                                      '&has_geo=1&extras=',
-                                      extras,
-                                      '&per_page=100&page=',
-                                      page,
-                                      '&format=json&nojsoncallback=1'),
-                               encoding= 'UTF-8'))
-        if(class(raw$photos$photo)=="list") Sys.sleep(1)
+        raw <- flickr.restquery(method="flickr.photos.search",
+                                       api_key=api_key,
+                                       bbox=bbox,
+                                       extras=extras,
+                                       page=page
+                                       )
+
+        if(!"photos" %in% names(raw)) Sys.sleep(1)
     }
 
-    if(class(raw$photos$photo)=="list") raw$photos$photo <- data.frame("context"=NA,"accuracy"=NA,"server"=NA,"isfriend"=NA,"title"=NA,"longitude"=NA,"latitude"=NA,"secret"=NA,"geo_is_public"=NA,"id"=NA,"geo_is_family"=NA,"owner"=NA,"isfamily"=NA,"farm"=NA,"geo_is_friend"=NA,"place_id"=NA,"woeid"=NA,"geo_is_contact"=NA,"ispublic"=NA)
+    if(!"photos" %in% names(raw)) raw$photos$photo <- data.frame("context"=NA,"accuracy"=NA,"server"=NA,"isfriend"=NA,"title"=NA,"longitude"=NA,"latitude"=NA,"secret"=NA,"geo_is_public"=NA,"id"=NA,"geo_is_family"=NA,"owner"=NA,"isfamily"=NA,"farm"=NA,"geo_is_friend"=NA,"place_id"=NA,"woeid"=NA,"geo_is_contact"=NA,"ispublic"=NA)
 
 
     if(pagenum==TRUE){
