@@ -11,11 +11,15 @@
 #' @examples
 #' flickr.people.getInfo('85701104@N03')
 flickr.people.getInfo <- function(owner){
-    baseurl <- 'https://api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key='
+    # baseurl <- 'https://api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key='
 
     userid <- gsub('@','%40',owner)
 
     raw <- getURL(paste0(baseurl,api_key,'&user_id=',userid,'&format=json&nojsoncallback=1'),encoding= 'UTF-8')
+    # raw <- flickr.restquery(method="flickr.people.getInfo",
+    #                         api_key,api_key,
+    #                         userid=owner
+    # )
 
     info <- fromJSON(raw)
 
