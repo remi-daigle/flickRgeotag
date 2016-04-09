@@ -4,8 +4,8 @@
 \alias{flickr.photos.search}
 \title{Search flickr for photos by bounding box}
 \usage{
-flickr.photos.search(api_key, secret, bbox, extras = "geo,tags,date_taken",
-  page = 1, pagenum = FALSE)
+flickr.photos.search(api_key, secret, bbox,
+  extras = "geo,tags,date_taken,url_m", page = 1, pagenum = FALSE)
 }
 \arguments{
 \item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}

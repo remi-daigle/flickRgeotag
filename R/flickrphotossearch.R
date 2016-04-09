@@ -24,7 +24,7 @@
 #' # get the total number of pages
 #' num <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,pagenum=TRUE)
 
-flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken',page=1,pagenum=FALSE){
+flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken,url_m',page=1,pagenum=FALSE){
     # make bbox a character string if necessary
     if(class(bbox)=="matrix"){
         bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
