@@ -7,8 +7,7 @@
 #' API to prevent unnecessary calls (useful for repetetive scripts). To pass a \code{list} of
 #' key/value pairs, use \code{do.call(flickr.restquery, key_value_list)}
 #'
-#' @param ... Arguments are treated as key/value pairs to be passed to the URL. The caller is responsible
-#'              for properly escaping any strings to be used in a URL (e.g. by xml2::url_escape).
+#' @param ... Arguments are treated as key/value pairs to be passed to the URL.
 #' @param rest_api The base URL for the REST API.
 #' @param .usecache \code{TRUE} if the cache should be used, use \code{FALSE} to force a call to the
 #'                  REST API.
@@ -21,6 +20,10 @@
 #' library(flickRgeotag)
 #' flickr.restquery(method="flickr.test.echo", name="value", api_key="610ccba3a846af469e1894da33514ea1")
 #'
+#' dta <- flickr.restquery(method="flickr.photos.search", api_key="2adee16e727679964eda05463d41fa74", bbox="-65,44.5,-64.5,45")
+#' df <- data.frame(t(sapply(dta$photos$photo, function(item) {item})))
+#' head(df)
+#'
 flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest/", .usecache=TRUE) {
     # make URL
     searchparams <- list(...)
@@ -30,7 +33,7 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
 
     # sorting ensures consistent url_hash with identical parameters
     params <- sapply(sort(names(searchparams)),
-                     function(item) {paste(item, searchparams[[item]], sep="=")})
+                     function(item) {paste(item, xml2::url_escape(searchparams[[item]]), sep="=")})
     url_string <- sprintf("%s?%s", rest_api, paste(params, collapse="&"))
     url_hash <- digest::digest(url_string)
 
