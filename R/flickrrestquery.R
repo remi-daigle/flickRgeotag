@@ -25,7 +25,6 @@
 #' head(df)
 #'
 flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest/", .usecache=TRUE) {
-    # browser()
     # make URL
     searchparams <- list(...)
     # may override some search params: https://www.flickr.com/services/api/response.json.html
