@@ -4,8 +4,8 @@
 \name{flickRgeotag}
 \alias{flickRgeotag}
 \alias{flickRgeotag-package}
-\title{flickRgeotag}
+\title{package}
 \description{
-Queries flickr for geotagged data. Works as an R wrapper for the flickerapi Python module. Requires a Python installation.
+Queries flickr for geotagged data. Works as a customized R wrapper for the flickr \href{https://www.flickr.com/services/api/}{API}.
 }
 
