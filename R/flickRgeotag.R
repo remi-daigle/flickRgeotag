@@ -4,9 +4,8 @@
 #'
 #' @docType package
 #' @name flickRgeotag
-#' @import magrittr
 #' @import sp
 #' @import jsonlite
-#' @import RCurl
+#' @import xml2
 #' @import dplyr
 NULL
