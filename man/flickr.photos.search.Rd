@@ -4,13 +4,11 @@
 \alias{flickr.photos.search}
 \title{Search flickr for photos by bounding box}
 \usage{
-flickr.photos.search(api_key, secret, bbox,
-  extras = "geo,tags,date_taken,url_m", page = 1, pagenum = FALSE)
+flickr.photos.search(api_key, bbox, extras = "geo,tags,date_taken,url_m",
+  page = 1, pagenum = FALSE)
 }
 \arguments{
 \item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
-
-\item{secret}{your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
 
 \item{bbox}{the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')}
 

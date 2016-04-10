@@ -4,7 +4,6 @@
 #'
 #' @param bbox the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')
 #' @param api_key your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
-#' @param secret your secret code from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
 #' @param extras character string of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
 #' @param pagenum LOGICAL will return the number of pages if TRUE, defaults to return a data.frame of metadata
 #' @param page page number
@@ -24,10 +23,10 @@
 #' # get the total number of pages
 #' num <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,pagenum=TRUE)
 
-flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken,url_m',page=1,pagenum=FALSE){
+flickr.photos.search <- function(api_key,bbox,extras='geo,tags,date_taken,url_m',page=1,pagenum=FALSE){
     # make bbox a character string if necessary
     if(class(bbox)=="matrix"){
-        bbox=paste0(as.character(bbox(EastCoast)),collapse=",")
+        bbox=paste0(as.character(bbox),collapse=",")
     }
 
     # query number of pages and metadata
@@ -43,10 +42,10 @@ flickr.photos.search <- function(api_key,secret,bbox,extras='geo,tags,date_taken
                                        page=page
                                        )
 
-        if(!"photos" %in% names(raw)) Sys.sleep(1)
+        if(length(raw$photos$photo)==0) Sys.sleep(1)
     }
 
-    if(!"photos" %in% names(raw)) raw$photos$photo <- data.frame("context"=NA,"accuracy"=NA,"server"=NA,"isfriend"=NA,"title"=NA,"longitude"=NA,"latitude"=NA,"secret"=NA,"geo_is_public"=NA,"id"=NA,"geo_is_family"=NA,"owner"=NA,"isfamily"=NA,"farm"=NA,"geo_is_friend"=NA,"place_id"=NA,"woeid"=NA,"geo_is_contact"=NA,"ispublic"=NA)
+    if(length(raw$photos$photo)==0) raw$photos$photo <- data.frame("context"=NA,"accuracy"=NA,"server"=NA,"isfriend"=NA,"title"=NA,"longitude"=NA,"latitude"=NA,"secret"=NA,"geo_is_public"=NA,"id"=NA,"geo_is_family"=NA,"owner"=NA,"isfamily"=NA,"farm"=NA,"geo_is_friend"=NA,"place_id"=NA,"woeid"=NA,"geo_is_contact"=NA,"ispublic"=NA)
 
 
     if(pagenum==TRUE){
