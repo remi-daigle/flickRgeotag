@@ -53,14 +53,16 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
         lines <- try(paste(readLines(connect, warn = FALSE), collapse=""), silent = TRUE)
         close(connect)
 
-        # store geocoded information in users global environment
-        if(!exists(".flickr_api_result", envir=.GlobalEnv)) {
-            db <- list()
-        } else {
-            db <- get(".flickr_api_result", envir=.GlobalEnv)
+        if(class(lines) != "try-error") {
+            # store geocoded information in users global environment
+            if(!exists(".flickr_api_result", envir=.GlobalEnv)) {
+                db <- list()
+            } else {
+                db <- get(".flickr_api_result", envir=.GlobalEnv)
+            }
+            db[[url_hash]] <- lines
+            .flickr_api_result <<- db
         }
-        db[[url_hash]] <- lines
-        .flickr_api_result <<- db
     }
 
     if(class(lines) == "try-error") {
