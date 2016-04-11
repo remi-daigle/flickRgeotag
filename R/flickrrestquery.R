@@ -52,19 +52,36 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
         lines <- try(paste(readLines(connect, warn = FALSE), collapse=""), silent = TRUE)
         close(connect)
 
-        # store geocoded information in users global environment
-        if(!exists(".flickr_api_result", envir=.GlobalEnv)) {
-            db <- list()
-        } else {
-            db <- get(".flickr_api_result", envir=.GlobalEnv)
+        # check for fail
+        if(class(lines) != "try-error") {
+            # store geocoded information in users global environment
+            if(!exists(".flickr_api_result", envir=.GlobalEnv)) {
+                db <- list()
+            } else {
+                db <- get(".flickr_api_result", envir=.GlobalEnv)
+            }
+            db[[url_hash]] <- lines
+            .flickr_api_result <<- db
         }
-        db[[url_hash]] <- lines
-        .flickr_api_result <<- db
     }
 
     if(class(lines) == "try-error") {
-        return(list(stat="url_request_error", code=-1))
+        return(list(stat="fail", code=-1, message="Unable to connect to URL"))
     } else {
         return(jsonlite::fromJSON(lines))
     }
+}
+
+#' Clear cached results
+#'
+#' Clears the local cache (located at \code{.flickr_api_result} in the \code{.GlobalEnv}).
+#'
+#' @export
+#'
+#' @examples
+#' flickr.clear_cache()
+#'
+flickr.clear_cache <- function() {
+    .flickr_api_result <- NULL; rm(.flickr_api_result) # trick CMD check
+    .flickr_api_result <<- list()
 }
