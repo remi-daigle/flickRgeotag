@@ -6,6 +6,7 @@
 #' @param api_key your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
 #' @param extras character vector of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
 #' @param .allpages Pass \code{TRUE} to return all pages of results (by default only 100 ish results are returned).
+#' @param .usecache Pass \code{FALSE} to not use cached results.
 #' @param ... Key/value pairs as defined in \href{https://www.flickr.com/services/api/flickr.photos.search.html}{the API documentation}. \code{text="my search query"} is particularly useful.
 #'
 #' @return A \code{data.frame} of photo information.
@@ -19,7 +20,7 @@
 #' photos3 <- flickr.photos.search(bbox=searchbbox("wolfville, NS"), min_taken_date = "2016-01-01")
 
 flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date_taken","url_m"),
-                                 .allpages=FALSE, ...) {
+                                 .allpages=FALSE, .usecache=TRUE, ...) {
 
     if(missing(api_key)) {
         api_key <- "9050c4b4efcc5fa378dc51233c098422" # paleolimbot's API key...feel free to leave in here
@@ -38,6 +39,7 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
     # use of ... allows caller to pass an arbitrary number of other params
     # to further constrain search (e.g. tags, text, any other param)
     queryparams <- list(...)
+    queryparams$.usecache <- .usecache
 
     # check to see if any search criteria were entered
     if(is.null(bbox) && length(queryparams) == 0) {
@@ -75,10 +77,8 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
             message("Downloading ", raw$photos$pages, " pages (estimated ", raw$photos$total, " photos)")
             pb <- utils::txtProgressBar(min=0, max=raw$photos$pages, width=20, file=stderr())
             for(page in 2:raw$photos$pages) {
-                queryparams$page <- page
-                # Sys.sleep(abs(rnorm(1, .25, .25))) # sleep anywhere from 0 to 1 seconds ish
                 newdf <- suppressMessages(flickr.photos.search(api_key=api_key, bbox=bbox, extras=extras,
-                            .allpages=FALSE, page=page, ...))
+                            .allpages=FALSE, .usecache=.usecache, page=page, ...))
 
                 # if there are no rows, quit the loop
                 if(nrow(newdf) == 0) {
