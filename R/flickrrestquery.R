@@ -71,3 +71,17 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
         return(jsonlite::fromJSON(lines))
     }
 }
+
+#' Clear cached results
+#'
+#' Clears the local cache (located at \code{.flickr_api_result} in the \code{.GlobalEnv}).
+#'
+#' @export
+#'
+#' @examples
+#' flickr.clear_cache()
+#'
+flickr.clear_cache <- function() {
+    .flickr_api_result <- NULL; rm(.flickr_api_result) # trick CMD check
+    .flickr_api_result <<- list()
+}
