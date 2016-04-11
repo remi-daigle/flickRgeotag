@@ -66,7 +66,7 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
     }
 
     if(class(lines) == "try-error") {
-        return(list(stat="url_request_error", code=-1))
+        return(list(stat="fail", code=-1, message="Unable to connect to URL"))
     } else {
         return(jsonlite::fromJSON(lines))
     }

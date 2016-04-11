@@ -61,7 +61,7 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
 
     # if there was an error, raise an error
     if(raw$stat != "ok") {
-        stop("Error occured in call to flickr.photos.search: ", raw$stat, " (code: ", raw$code, ")")
+        stop("Error occured in call to flickr.photos.search: ", raw$message, " (code: ", raw$code, ")")
     }
 
     # if there are no photos, return empty data.frame
