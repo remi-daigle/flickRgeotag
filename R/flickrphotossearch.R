@@ -1,13 +1,29 @@
-#' Search flickr for photos by bounding box
+#' Search flickr for photos
 #'
-#' Returns data.frame of metadata for geotagged images inside the bounding box for a single page. Essentially a pared down R version of the flickr \href{https://www.flickr.com/services/api/explore/flickr.photos.search}{tool}
+#' An R implementation of
+#' \href{https://www.flickr.com/services/api/explore/flickr.photos.search}{flickr.photos.search}
+#' from the \href{https://www.flickr.com/services/api/}{Flickr API}. Searches for photos based on
+#' user-defined criteria. Some parameters (\code{bbox} and \code{extras}) allow passing of R objects
+#' that are converted to the text input needed by the API.
 #'
-#' @param bbox the spatial bounding box from spatial data; output from \code{prettymapr::searchbbox()}, \code{sp::bbox()} (e.g. \code{bbox=bbox(shp)}) or a character string (e.g. \code{bbox='-65,44.5,-64.5,45'})
-#' @param api_key your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
-#' @param extras character vector of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
-#' @param .allpages Pass \code{TRUE} to return all pages of results (by default only 100 ish results are returned).
+#' @param bbox the spatial bounding box from spatial data; output from
+#'   \code{prettymapr::searchbbox()}, \code{sp::bbox()} (e.g.
+#'   \code{bbox=bbox(shp)}) or a character string (e.g.
+#'   \code{bbox='-65,44.5,-64.5,45'})
+#' @param api_key your personal API key from
+#'   \href{https://www.flickr.com/services/apps/create/apply/}{flickr}
+#' @param extras character vector of potential extra fields returned. By default
+#'   ('geo,tags') returns the geotag information (latitude, longitude, etc) and
+#'   the photo's tags (keywords). Currently supported fields are: description,
+#'   license, date_upload, date_taken, owner_name, icon_server, original_format,
+#'   last_update, geo, tags, machine_tags, o_dims, views, media, path_alias,
+#'   url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
+#' @param .allpages Pass \code{TRUE} to return all pages of results (by default
+#'   only 100 ish results are returned).
 #' @param .usecache Pass \code{FALSE} to not use cached results.
-#' @param ... Key/value pairs as defined in \href{https://www.flickr.com/services/api/flickr.photos.search.html}{the API documentation}. \code{text="my search query"} is particularly useful.
+#' @param ... Key/value pairs as defined in
+#'   \href{https://www.flickr.com/services/api/flickr.photos.search.html}{the
+#'   API documentation}. \code{text="my search query"} is particularly useful.
 #'
 #' @return A \code{data.frame} of photo information.
 #' @export
