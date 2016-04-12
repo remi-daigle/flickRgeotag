@@ -4,14 +4,19 @@
 \alias{flickr.meta.dl}
 \title{Download all metadata related to flickr.photos.search}
 \usage{
-flickr.meta.dl(api_key, bbox, extras = "geo,tags,date_taken,url_m")
+flickr.meta.dl(api_key, bb, extras = "geo,tags,date_taken,url_m",
+  deg = 0.01)
 }
 \arguments{
-\item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
+\item{api_key}{your personal API key from
+\href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
 
-\item{bbox}{the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')}
-
-\item{extras}{character string of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
+\item{extras}{character vector of potential extra fields returned. By default
+('geo,tags') returns the geotag information (latitude, longitude, etc) and
+the photo's tags (keywords). Currently supported fields are: description,
+license, date_upload, date_taken, owner_name, icon_server, original_format,
+last_update, geo, tags, machine_tags, o_dims, views, media, path_alias,
+url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
 }
 \value{
 data.frame
@@ -23,6 +28,6 @@ Returns data.frame of metadata for geotagged images inside the bounding box for 
 api <- '1aaaaa11a1aa11aaa1a11a111a1aaaaa'   # insert your own API key here
 sec <- '11a1a111a111a1a1'                   # insert your own secret code here
 bb <- '-65,44.5,-64.5,45'
-photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
+photos <- flickr.photos.search(api_key = api,secret = sec,bb=bb)
 }
 

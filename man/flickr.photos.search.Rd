@@ -2,38 +2,51 @@
 % Please edit documentation in R/flickrphotossearch.R
 \name{flickr.photos.search}
 \alias{flickr.photos.search}
-\title{Search flickr for photos by bounding box}
+\title{Search flickr for photos}
 \usage{
-flickr.photos.search(api_key, bbox, extras = "geo,tags,date_taken,url_m",
-  page = 1, pagenum = FALSE)
+flickr.photos.search(api_key, bbox = NULL, extras = c("geo", "tags",
+  "date_taken", "url_m"), .allpages = FALSE, .usecache = TRUE, ...)
 }
 \arguments{
-\item{api_key}{your personal API key from \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
+\item{api_key}{your personal API key from
+\href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
 
-\item{bbox}{the spatial bounding box from spatial data; output from sp::bbox() (e.g. bbox=bbox(shp)) or a character string (e.g. bbox='-65,44.5,-64.5,45')}
+\item{bbox}{the spatial bounding box from spatial data; output from
+\code{prettymapr::searchbbox()}, \code{sp::bbox()} (e.g.
+\code{bbox=bbox(shp)}) or a character string (e.g.
+\code{bbox='-65,44.5,-64.5,45'})}
 
-\item{extras}{character string of potential extra fields returned. By default ('geo,tags') returns the geotag information (latitude, longitude, etc) and the photo's tags (keywords). Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
+\item{extras}{character vector of potential extra fields returned. By default
+('geo,tags') returns the geotag information (latitude, longitude, etc) and
+the photo's tags (keywords). Currently supported fields are: description,
+license, date_upload, date_taken, owner_name, icon_server, original_format,
+last_update, geo, tags, machine_tags, o_dims, views, media, path_alias,
+url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
 
-\item{page}{page number}
+\item{.allpages}{Pass \code{TRUE} to return all pages of results (by default
+only 100 ish results are returned).}
 
-\item{pagenum}{LOGICAL will return the number of pages if TRUE, defaults to return a data.frame of metadata}
+\item{.usecache}{Pass \code{FALSE} to not use cached results.}
+
+\item{...}{Key/value pairs as defined in
+\href{https://www.flickr.com/services/api/flickr.photos.search.html}{the
+API documentation}. \code{text="my search query"} is particularly useful.}
 }
 \value{
-data.frame
+A \code{data.frame} of photo information.
 }
 \description{
-Returns data.frame of metadata for geotagged images inside the bounding box for a single page. Essentially a pared down R version of the flickr \href{https://www.flickr.com/services/api/explore/flickr.photos.search}{tool}
+An R implementation of
+\href{https://www.flickr.com/services/api/explore/flickr.photos.search}{flickr.photos.search}
+from the \href{https://www.flickr.com/services/api/}{Flickr API}. Searches for photos based on
+user-defined criteria. Some parameters (\code{bbox} and \code{extras}) allow passing of R objects
+that are converted to the text input needed by the API.
 }
 \examples{
-# set up basic information
-api <- '1aaaaa11a1aa11aaa1a11a111a1aaaaa'   # insert your own API key here
-sec <- '11a1a111a111a1a1'                   # insert your own secret code here
-bb <- '-65,44.5,-64.5,45'
-
-# get metadata from page 1 (100 records per page)
-photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,page=1)
-
-# get the total number of pages
-num <- flickr.photos.search(api_key = api,secret = sec,bbox=bb,pagenum=TRUE)
+library(prettymapr)
+bb <- searchbbox("halifax, NS")
+photos <- flickr.photos.search(bbox=bb, text="water", min_taken_date="2016-01-01")
+photos2 <- flickr.photos.search(bbox=bb, text="water", .allpages=TRUE)
+photos3 <- flickr.photos.search(bbox=searchbbox("wolfville, NS"), min_taken_date = "2016-01-01")
 }
 
