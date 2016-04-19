@@ -4,8 +4,7 @@
 \alias{flickr.meta.dl}
 \title{Download all metadata related to flickr.photos.search}
 \usage{
-flickr.meta.dl(api_key, bb, extras = "geo,tags,date_taken,url_m",
-  deg = 0.01)
+flickr.meta.dl(api_key, bb, extras = "geo,tags,date_taken,url_m")
 }
 \arguments{
 \item{api_key}{your personal API key from

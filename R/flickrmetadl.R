@@ -13,54 +13,38 @@
 #' sec <- '11a1a111a111a1a1'                   # insert your own secret code here
 #' bb <- '-65,44.5,-64.5,45'
 #' photos <- flickr.photos.search(api_key = api,secret = sec,bb=bb)
-flickr.meta.dl <- function(api_key,bb,extras='geo,tags,date_taken,url_m',deg=0.01){
-
+flickr.meta.dl <- function(api_key,bb,extras='geo,tags,date_taken,url_m'){
+browser()
     # make bbox a character string if necessary
-    if(class(bbox)=="matrix"){
-        bbox=paste0(as.character(bbox),collapse=",")
+    if(class(bb)=="matrix"){
+        bb=paste0(as.character(bb),collapse=",")
     }
 
-    # extract bbox info
-    if(class(bb)=="character"){
-        lat1 <- as.numeric(strsplit(bb,",")[[1]][2])
-        lat2 <- as.numeric(strsplit(bb,",")[[1]][4])
-        lng1 <- as.numeric(strsplit(bb,",")[[1]][1])
-        lng2 <- as.numeric(strsplit(bb,",")[[1]][3])
+    # rm(list=ls(pattern="temp_photo_*"))
+
+    for(i in 1:length(sub_bbox)){
+        # get data
+        assign(paste0('temp_photo_',i),flickr.photos.search(api_key, sub_bbox[[i]],.allpages = T),envir=environment())
     }
 
-    # loop over each `deg` cell
-    for(i in 1:ceiling((lng2-lng1)*(1/deg))){
-        for(j in 1:ceiling((lat2-lat1)*(1/deg))){
-            lat <- lat1+(j-1)*deg
-            lng <- lng1+(i-1)*deg
-            bb_temp <- paste(lng,
-                               lat,
-                               lng+deg,
-                               lat+deg,
-                               sep=",")
+    # make a list of output
+    photo_list <- lapply(ls(pattern="temp_photo_*"),get,envir=environment())
 
-            assign(paste0("temp_photo_",bb_temp),
-                       flickr.photos.search(api_key = api_key,
-                                            bbox=bb_temp,
-                                            extras = extras,
-                                            .allpages=TRUE),
-                   envir=environment()
-            )
+    # remove empties
+    photo_list <- photo_list[unlist(lapply(photo_list,nrow))>0]
 
-        }
+    # fill in empty columns
+    nam <- unique(unlist(lapply(photo_list,names)))
+    for(i in 1:length(photo_list)){
+        missing <- NULL
+        df <- photo_list[[i]]
+        missing <- nam[!nam %in% names(df)]
+        df[missing] <- NA
+        photo_list[[i]] <- df[nam]
     }
 
-    # list all temp_photo_'s assigned in the loops
-    df_list <- lapply(ls(pattern="temp_photo_*"),get,envir=environment())
-    full_names <- unique(unlist(lapply(df_list,names)))
-    index <- lapply(lapply(df_list,names),all.equal.character,full_names)=="TRUE"
-
-    # rbind all the temp_photo_'s that have all the desired columns and have data
-    photos <- do.call("rbind",df_list[index])
-
-
-    # remove duplicate records
-    photos <- photos[!duplicated(photos),]
+    photos <- unique(do.call('rbind',photo_list))
+    # rm(list=ls(pattern="temp_photo_*"))
 
     return(photos)
 }
