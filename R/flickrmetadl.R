@@ -14,7 +14,6 @@
 #' bb <- '-65,44.5,-64.5,45'
 #' photos <- flickr.photos.search(api_key = api,secret = sec,bb=bb)
 flickr.meta.dl <- function(api_key,bb,extras='geo,tags,date_taken,url_m'){
-browser()
     # make bbox a character string if necessary
     if(class(bb)=="matrix"){
         bb=paste0(as.character(bb),collapse=",")
