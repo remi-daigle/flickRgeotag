@@ -4,11 +4,14 @@
 \alias{flickr.meta.dl}
 \title{Download all metadata related to flickr.photos.search}
 \usage{
-flickr.meta.dl(api_key, bb, extras = "geo,tags,date_taken,url_m")
+flickr.meta.dl(api_key, sub_bbox, extras = "geo,tags,date_taken,url_m")
 }
 \arguments{
 \item{api_key}{your personal API key from
 \href{https://www.flickr.com/services/apps/create/apply/}{flickr}}
+
+\item{sub_bbox}{a list of spatial bounding box from spatial data; output from
+\code{splitbbox()}}
 
 \item{extras}{character vector of potential extra fields returned. By default
 ('geo,tags') returns the geotag information (latitude, longitude, etc) and

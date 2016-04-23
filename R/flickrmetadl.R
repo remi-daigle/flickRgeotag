@@ -3,6 +3,8 @@
 #' Returns data.frame of metadata for geotagged images inside the bounding box for all available pages. Unavailable pages will be filled with NA
 #'
 #' @inheritParams flickr.photos.search
+#' @param sub_bbox a list of spatial bounding box from spatial data; output from
+#'  \code{splitbbox()}
 #'
 #'
 #' @return data.frame
@@ -13,13 +15,7 @@
 #' sec <- '11a1a111a111a1a1'                   # insert your own secret code here
 #' bb <- '-65,44.5,-64.5,45'
 #' photos <- flickr.photos.search(api_key = api,secret = sec,bb=bb)
-flickr.meta.dl <- function(api_key,bb,extras='geo,tags,date_taken,url_m'){
-    # make bbox a character string if necessary
-    if(class(bb)=="matrix"){
-        bb=paste0(as.character(bb),collapse=",")
-    }
-
-    # rm(list=ls(pattern="temp_photo_*"))
+flickr.meta.dl <- function(api_key,sub_bbox,extras='geo,tags,date_taken,url_m'){
 
     for(i in 1:length(sub_bbox)){
         # get data
