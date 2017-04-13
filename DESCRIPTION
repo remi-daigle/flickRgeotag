@@ -7,4 +7,4 @@ Maintainer: Remi Daigle <remi.daigle@utoronto.ca>
 Description: Queries flickr for geotagged data. Works as an R wrapper for the flickr API.
 License: CC0
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

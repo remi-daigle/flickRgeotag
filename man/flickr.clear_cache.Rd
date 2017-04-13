@@ -13,4 +13,3 @@ Clears the local cache (located at \code{.flickr_api_result} in the \code{.Globa
 flickr.clear_cache()
 
 }
-

@@ -35,4 +35,3 @@ df <- data.frame(t(sapply(dta$photos$photo, function(item) {item})))
 head(df)
 
 }
-

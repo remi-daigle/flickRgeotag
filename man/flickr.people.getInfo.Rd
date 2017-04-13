@@ -18,4 +18,3 @@ Gets available user profile info, currently only retrieve user location
 \examples{
 flickr.people.getInfo('85701104@N03')
 }
-

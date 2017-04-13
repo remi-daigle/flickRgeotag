@@ -41,4 +41,3 @@ Title
 \examples{
 splitbbox(api_key, bbox)
 }
-

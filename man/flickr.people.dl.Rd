@@ -22,4 +22,3 @@ bb <- '-65,44.5,-64.5,45'
 photos <- flickr.photos.search(api_key = api,secret = sec,bbox=bb)
 photosplusinfo <- flickr.people.dl(photos)
 }
-

@@ -105,6 +105,10 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
                 missing <- names(df)[!names(df) %in% names(newdf)]
                 newdf[missing] <- NA
 
+                missing <- NULL
+                missing <- names(newdf)[!names(newdf) %in% names(df)]
+                df[missing] <- NA
+
                 df <- rbind(df, newdf)
                 utils::setTxtProgressBar(pb, page)
             }

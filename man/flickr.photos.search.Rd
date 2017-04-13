@@ -49,4 +49,3 @@ photos <- flickr.photos.search(bbox=bb, text="water", min_taken_date="2016-01-01
 photos2 <- flickr.photos.search(bbox=bb, text="water", .allpages=TRUE)
 photos3 <- flickr.photos.search(bbox=searchbbox("wolfville, NS"), min_taken_date = "2016-01-01")
 }
-
