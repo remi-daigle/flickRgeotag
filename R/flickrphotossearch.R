@@ -18,6 +18,7 @@
 #'   license, date_upload, date_taken, owner_name, icon_server, original_format,
 #'   last_update, geo, tags, machine_tags, o_dims, views, media, path_alias,
 #'   url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o
+#' @param output character string indicating output type. Either "metadata" (default) for geotagged images, or "total" indicating the total number of records
 #' @param .allpages Pass \code{TRUE} to return all pages of results (by default
 #'   only 100 ish results are returned).
 #' @param .usecache Pass \code{FALSE} to not use cached results.
@@ -36,8 +37,7 @@
 #' photos3 <- flickr.photos.search(bbox=searchbbox("wolfville, NS"), min_taken_date = "2016-01-01")
 
 flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date_taken","url_m"),
-                                 .allpages=FALSE, .usecache=TRUE, ...) {
-
+                                 output="metadata",.allpages=FALSE, .usecache=TRUE, ...) {
     if(missing(api_key)) {
         api_key <- "9050c4b4efcc5fa378dc51233c098422" # paleolimbot's API key...feel free to leave in here
         message("Using default api_key...please get your own at https://www.flickr.com/services/apps/create/apply/")
@@ -79,52 +79,58 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
     if(raw$stat != "ok") {
         stop("Error occured in call to flickr.photos.search: ", raw$message, " (code: ", raw$code, ")")
     }
+    if(output=="metadata"){
+        # if there are no photos, return empty data.frame
+        if(is.null(raw$photos) || length(raw$photos$photo) == 0 || raw$photos$total == 0) {
+            if(is.null(queryparams$page)) warning("No photos found, returning emtpy data frame")
+            return(data.frame()) # makes more sense than data frame with one row
+        }
 
-    # if there are no photos, return empty data.frame
-    if(is.null(raw$photos) || length(raw$photos$photo) == 0 || raw$photos$total == 0) {
-        if(is.null(queryparams$page)) warning("No photos found, returning emtpy data frame")
-        return(data.frame()) # makes more sense than data frame with one row
-    }
+        df <- raw$photos$photo
 
-    df <- raw$photos$photo
+        if(.allpages) {
+            if(raw$photos$pages > 1) {
+                message("Downloading ", raw$photos$pages, " pages (estimated ", raw$photos$total, " photos)")
+                pb <- utils::txtProgressBar(min=0, max=raw$photos$pages, width=20, file=stderr())
+                for(page in 2:raw$photos$pages) {
+                    newdf <- suppressMessages(flickr.photos.search(api_key=api_key, bbox=bbox, extras=extras,
+                                                                   .allpages=FALSE, .usecache=.usecache, page=page, ...))
 
-    if(.allpages) {
-        if(raw$photos$pages > 1) {
-            message("Downloading ", raw$photos$pages, " pages (estimated ", raw$photos$total, " photos)")
-            pb <- utils::txtProgressBar(min=0, max=raw$photos$pages, width=20, file=stderr())
-            for(page in 2:raw$photos$pages) {
-                newdf <- suppressMessages(flickr.photos.search(api_key=api_key, bbox=bbox, extras=extras,
-                            .allpages=FALSE, .usecache=.usecache, page=page, ...))
+                    # if there are no rows, quit the loop
+                    if(nrow(newdf) == 0) {
+                        break
+                    }
+                    # fill in empty columns
+                    missing <- NULL
+                    missing <- names(df)[!names(df) %in% names(newdf)]
+                    newdf[missing] <- NA
 
-                # if there are no rows, quit the loop
-                if(nrow(newdf) == 0) {
-                    break
+                    missing <- NULL
+                    missing <- names(newdf)[!names(newdf) %in% names(df)]
+                    df[missing] <- NA
+
+                    df <- rbind(df, newdf)
+                    utils::setTxtProgressBar(pb, page)
                 }
-                # fill in empty columns
-                missing <- NULL
-                missing <- names(df)[!names(df) %in% names(newdf)]
-                newdf[missing] <- NA
+                message("...done!")
 
-                missing <- NULL
-                missing <- names(newdf)[!names(newdf) %in% names(df)]
-                df[missing] <- NA
-
-                df <- rbind(df, newdf)
-                utils::setTxtProgressBar(pb, page)
+                # remove duplicate entries (often included in flickr output)
+                return(unique(df))
+            } else {
+                return(df)
             }
-            message("...done!")
-
-            # remove duplicate entries (often included in flickr output)
-            return(unique(df))
         } else {
+            if(raw$photos$pages > 1) {
+                message(sprintf("Returning %s photos of %s. Use .allpages=TRUE to query all photos (may take a long time).",
+                                nrow(df), raw$photos$total))
+            }
             return(df)
         }
+    } else if(output=="total"){
+        return(as.numeric(raw$photos$total))
     } else {
-        if(raw$photos$pages > 1) {
-            message(sprintf("Returning %s photos of %s. Use .allpages=TRUE to query all photos (may take a long time).",
-                    nrow(df), raw$photos$total))
-        }
-        return(df)
+        warning("Warning: Output type not recognized")
     }
+
 }
 

@@ -5,7 +5,8 @@
 \title{Search flickr for photos}
 \usage{
 flickr.photos.search(api_key, bbox = NULL, extras = c("geo", "tags",
-  "date_taken", "url_m"), .allpages = FALSE, .usecache = TRUE, ...)
+  "date_taken", "url_m"), output = "metadata", .allpages = FALSE,
+  .usecache = TRUE, ...)
 }
 \arguments{
 \item{api_key}{your personal API key from
@@ -22,6 +23,8 @@ the photo's tags (keywords). Currently supported fields are: description,
 license, date_upload, date_taken, owner_name, icon_server, original_format,
 last_update, geo, tags, machine_tags, o_dims, views, media, path_alias,
 url_sq, url_t, url_s, url_q, url_m, url_n, url_z, url_c, url_l, url_o}
+
+\item{output}{character string indicating output type. Either "metadata" (default) for geotagged images, or "total" indicating the total number of records}
 
 \item{.allpages}{Pass \code{TRUE} to return all pages of results (by default
 only 100 ish results are returned).}
