@@ -1,10 +1,10 @@
 Package: flickRgeotag
 Type: Package
 Title: flickRgeotag
-Version: 0.1.0
+Version: 0.1.1
 Author: Remi Daigle, Dewey Dunnington
-Maintainer: Remi Daigle <remi.daigle@utoronto.ca>
+Maintainer: Remi Daigle <Remi.Daigle@dfo-mpo.gc.ca>
 Description: Queries flickr for geotagged data. Works as an R wrapper for the flickr API.
-License: CC0
+License: MIT
 LazyData: TRUE
 RoxygenNote: 6.0.1
