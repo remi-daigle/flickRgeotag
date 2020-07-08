@@ -29,7 +29,7 @@ flickr.restquery <- function(..., rest_api="https://api.flickr.com/services/rest
     searchparams <- list(...)
     # may override some search params: https://www.flickr.com/services/api/response.json.html
     searchparams$format <- "json"
-    searchparams$nojsoncallback <- 1
+    searchparams$nojsoncallback <- "1"
 
     # sorting ensures consistent url_hash with identical parameters
     params <- sapply(sort(names(searchparams)),
