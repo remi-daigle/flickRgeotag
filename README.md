@@ -6,7 +6,7 @@ A 'work in progress' R package that queries flickr for geotagged data. Works as 
 This package is not on CRAN, please install directly from GitHub:
 
 ```
-devtools::install_github("https://github.com/remi-daigle/flickRgeotag)
+devtools::install_github("https://github.com/remi-daigle/flickRgeotag")
 ```
 
 ## Example usage:
