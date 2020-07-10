@@ -15,7 +15,7 @@ splitbbox <- function(api_key, bbox=NULL, extras=c("geo","tags","date_taken","ur
     }
 
     # make bbox a character string if necessary
-    if(class(bbox)=="matrix"){
+    if(any(class(bbox)=="matrix")){
         bbox=paste0(as.character(bbox),collapse=",")
     }
 

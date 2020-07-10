@@ -94,7 +94,7 @@ flickr.photos.search <- function(api_key, bbox=NULL, extras=c("geo","tags","date
                 pb <- utils::txtProgressBar(min=0, max=raw$photos$pages, width=20, file=stderr())
                 for(page in 2:raw$photos$pages) {
                     newdf <- suppressMessages(flickr.photos.search(api_key=api_key, bbox=bbox, extras=extras,
-                                                                   .allpages=FALSE, .usecache=.usecache, page=page, ...))
+                                                                   .allpages=FALSE, .usecache=.usecache, page=as.character(page), ...))
 
                     # if there are no rows, quit the loop
                     if(nrow(newdf) == 0) {
